@@ -11,8 +11,15 @@ class AuthorsController {
     public async index(req: Request, res: Response) {
 
         try {
+            console.log('index');
+            // Book.belongsToMany(Author, { through: 'AuthorHasBook', foreignKey: 'BookId', otherKey: 'AuthorId' });
+            // Author.belongsToMany(Book, { through: 'AuthorHasBook', foreignKey: 'AuthorId', otherKey: 'BookId' });
+            Book.belongsToMany(Author, { through: 'AuthorHasBook' });
+            Author.belongsToMany(Book, { through: 'AuthorHasBook' });
+
             const authors = await Author.findAll({
-                raw: true
+                include: Book
+                // raw: true
             });
 
             if (authors) {
@@ -24,7 +31,24 @@ class AuthorsController {
             console.log(error);
             res.sendStatus(500);
         }
+
+        // try {
+        //     const authors = await Author.findAll({
+        //         raw: true
+        //     });
+
+        //     if (authors) {
+        //         res.send(authors);
+        //     } else {
+        //         res.sendStatus(404);
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        //     res.sendStatus(500);
+        // }
     }
+
+
 
     // public async providers (req: Request, res: Response) {
     //     const product: Provider[] = await Provider.findAll(
