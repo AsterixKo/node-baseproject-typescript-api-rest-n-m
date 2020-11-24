@@ -19,7 +19,6 @@ class AuthorsController {
 
             const authors = await Author.findAll({
                 include: Book
-                // raw: true
             });
 
             if (authors) {
